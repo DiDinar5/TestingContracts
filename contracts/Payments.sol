@@ -20,7 +20,7 @@ contract Payments{
     event PaymentMade(address indexed from, uint amount, string message, uint time);
 
     function getPayment(address addr, uint index) public view returns (Payment memory) {
-        require(msg.sender == addr, "Access denied"); // Restrict access
+        // require(msg.sender == addr, "Access denied"); 
         return balance[addr].payments[index];
     }
 

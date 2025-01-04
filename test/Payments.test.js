@@ -21,4 +21,25 @@ describe("Payments", function () {
         console.log(balance)
         expect(balance).to.eq(0)
     });
+
+    it("should be possible to send funds", async function() {
+        const sum = 100
+        const message = "message from hardhat"
+        
+        const tx = await payments.connect(acc2).pay(message, { value: sum });
+
+        await expect(() => tx).to.changeEtherBalances([acc2, payments], [-sum, sum]);
+
+        await tx.wait();
+
+        const contractAddressNew = await payments.getAddress();
+               expect(contractAddressNew).to.be.properAddress;
+
+
+        const newPayment = await payments.getPayment(contractAddressNew, 0); 
+        
+        console.log("Payment details:", newPayment);
+        expect(newPayment.amount).to.eq(0);
+    });
+    
 });
